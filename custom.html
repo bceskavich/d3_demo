@@ -18,7 +18,7 @@
             var w = 500;
             var h = 300;
             var barPadding = 10;
-            var padding = 30;
+            var padding = 10;
 
     		// Schools + Bars
     		var schooldata = [
@@ -34,12 +34,12 @@
     		// Scaling
             var yScale = d3.scale.linear()
                                 .domain([0, d3.max(schooldata, function(d) { return d[1]; })])
-                                .range([h - padding, padding]);
+                                .range([padding, h - padding]);
 
-            /* var yAxis = d3.svg.axis()
+            var yAxis = d3.svg.axis()
                               .scale(yScale)
                               .orient("left")
-                              .ticks(5); */
+                              .ticks(5);
 
     		// SVG Canvas Creation
     		var svg = d3.select("body")
@@ -53,14 +53,15 @@
                 .enter()
                 .append("rect")
                 .attr("x", function(d, i){
-                    return i * (w / schooldata.length);
+                	return ((i * ((w - (padding * 2)) / schooldata.length))) + 30;
                 })
                 .attr("y", function(d) {
-                    return h - yScale(d[1]);
+                	return d[1] - padding * 2;
+                    // return (h - yScale(d[1])) - (padding * 2);
                 })
                 .attr("width", w / schooldata.length - barPadding)
                 .attr("height", function(d) {
-                    return yScale(d[1]);
+                    return (yScale(d[1]) + padding);
                 })
                 .attr("fill", function(d) {
                     if (d[0] == "Syracuse") {
@@ -73,6 +74,30 @@
                     	return "blue";
                     }
                 });
+
+            // Bar Chart Labels
+            svg.selectAll("text")
+            	.data(schooldata)
+            	.enter()
+            	.append("text")
+            	.text(function(d) {
+            		return d[0];
+            	})
+            	.attr("x", function(d, i){
+                    return i * (w / schooldata.length);
+                })
+                .attr("y", function(d) {
+                    return h;
+                })
+                .attr("font-family", "Helvetica")
+                .attr("font-size", "11px")
+                .attr("fill", "black")
+                .attr("text-anchor", "middle");
+
+            svg.append("g")
+            	.attr("class", "axis")
+            	.attr("transform", "translate(" + (padding + 10) + ",0)")
+                .call(yAxis);
 
     	</script>
     </body>
