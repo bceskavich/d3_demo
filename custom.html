@@ -17,19 +17,62 @@
     		// SVG Canvas Size
             var w = 500;
             var h = 300;
+            var barPadding = 10;
             var padding = 30;
 
     		// Schools + Bars
-    		var data = [
+    		var schooldata = [
     			[ "Syracuse", 6 ],
     			[ "Colgate", 1 ],
     			[ "Michigan", 12 ],
     			[ "Georgetown", 6],
     			[ "Duke", 11 ],
     			[ "Villanova", 3 ]
-    		]
+    		];
 
+    		
+    		// Scaling
+            var yScale = d3.scale.linear()
+                                .domain([0, d3.max(schooldata, function(d) { return d[1]; })])
+                                .range([h - padding, padding]);
 
+            /* var yAxis = d3.svg.axis()
+                              .scale(yScale)
+                              .orient("left")
+                              .ticks(5); */
+
+    		// SVG Canvas Creation
+    		var svg = d3.select("body")
+    					.append("svg")
+    					.attr("width", w)
+    					.attr("height", h);
+
+    		// Bar Chart Creation
+    		svg.selectAll("rect")
+                .data(schooldata)
+                .enter()
+                .append("rect")
+                .attr("x", function(d, i){
+                    return i * (w / schooldata.length);
+                })
+                .attr("y", function(d) {
+                    return h - yScale(d[1]);
+                })
+                .attr("width", w / schooldata.length - barPadding)
+                .attr("height", function(d) {
+                    return yScale(d[1]);
+                })
+                .attr("fill", function(d) {
+                    if (d[0] == "Syracuse") {
+                    	return "orange";
+                    }
+                    else if (d[0] == "Georgetown" || d[0] == "Duke" || d[0] == "Villanova") {
+                    	return "red";
+                    }
+                    else {
+                    	return "blue";
+                    }
+                });
 
     	</script>
     </body>
