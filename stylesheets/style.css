@@ -1,3 +1,5 @@
+/* Index */
+
 body {
 	font-family: "Helvetica Neue", Arial, sans-serif;
 }
@@ -20,4 +22,25 @@ div.bar {
 .axis text {
 	font-family: "Helvetica";
 	font-size: 11px;
+}
+
+/* Bostock */
+
+#bostock #chart1 {
+	font: 10px sans-serif;
+	background-color: steelblue;
+	text-align: right;
+	padding: 3px;
+	margin: 1px;
+	color: white;
+}
+
+#bostock #chart2 rect {
+  fill: steelblue;
+}
+
+#bostock #chart2 text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
 }
