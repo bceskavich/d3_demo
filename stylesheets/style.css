@@ -44,3 +44,13 @@ div.bar {
   font: 10px sans-serif;
   text-anchor: end;
 }
+
+#bostock #chart3 rect {
+  fill: steelblue;
+}
+
+#bostock #chart3 text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
