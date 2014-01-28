@@ -49,8 +49,22 @@ div.bar {
   fill: steelblue;
 }
 
-#bostock #chart3 text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: middle;
+#bostock #chart3 rect:hover {
+	fill: darkred;
 }
+
+#bostock .axis text {
+  font: 10px sans-serif;
+}
+
+#bostock .axis path,
+#bostock .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#bostock .x.axis path {
+  display: none;
+}
+

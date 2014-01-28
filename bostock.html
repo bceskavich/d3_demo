@@ -105,52 +105,75 @@
 
         <script type="text/javascript">
         
-            var w2 = 960,
-                h2 = 500;
+            var margin = {top: 20, right: 30, bottom: 30, left: 40},
+                w2 = 600 - margin.left - margin.right,
+                h2 = 500 - margin.top - margin.bottom;
 
-            var y = d3.scale.linear()
+            var xscale = d3.scale.ordinal()
+                .rangeRoundBands([0, w2], .1);
+
+            var yscale = d3.scale.linear()
                 .range([h2, 0]);
+
+            var xAxis = d3.svg.axis()
+                .scale(xscale)
+                .orient("bottom");
+
+            var yAxis = d3.svg.axis()
+                .scale(yscale)
+                .orient("left")
+                .ticks(10);
 
             var c2 = d3.select("body")
                 .append("svg")
                 .attr("id", "chart3")
-                .attr("width", w2)
-                .attr("height", h2);
+                .attr("width", w2 + margin.left + margin.right)
+                .attr("height", h2 + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             // 3. Code within download runs last, post-download completion
             d3.tsv("data/data.tsv", type, function(error, data){
-                y.domain([0, d3.max(data, function(d){
+                xscale.domain(data.map(function(d) {
+                    return d.name;
+                }));
+
+                yscale.domain([0, d3.max(data, function(d){
                     return d.value;
                 })]);
-
-                var barWidth = w2 / data.length;
 
                 var bar = c2.selectAll("g")
                     .data(data)
                     .enter()
                     .append("g")
                     .attr("transform", function(d, i){
-                        return "translate(" + i * barWidth + ",0)";
+                        return "translate(" + xscale(d.name) + ",0)";
                     });
 
                 bar.append("rect")
                     .attr("y", function(d){
-                        return y(d.value);
+                        return yscale(d.value);
                     })
                     .attr("height", function(d){
-                        return h2 - y(d.value);
+                        return h2 - yscale(d.value);
                     })
-                    .attr("width", barWidth - 1);
+                    .attr("width", xscale.rangeBand());
 
-                bar.append("text")
-                    .attr("x", barWidth / 2)
-                    .attr("y", function(d){
-                        return y(d.value) + 3;
-                    })
-                    .attr("dy", ".75em")
-                    .text(function(d){
-                        return d.value;
-                    });
+                c2.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + h2 + ")")
+                    .call(xAxis);
+
+                c2.append("g")
+                    .attr("class", "y axis")
+                    .call(yAxis)
+                    .append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Amount");
+
             });
             
             // 2. Code runs second, while file is downloading
