@@ -1,10 +1,92 @@
-/* Index */
+/* Universal Styles */
 
 body {
-	font-family: "Helvetica Neue", Arial, sans-serif;
+	font-family: "Avenir", Helvetica, Arial, sans-serif;
+	border:0;
+	margin:0;
 }
 
-div.bar {
+a {
+	color: #8b2900;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+
+.nav {
+	background-color: #5F9EA0;
+	width:100%;
+}
+
+.container,
+.nav-container {
+	width:1000px;
+	margin:0 auto;
+	padding:0px 20px;
+}
+
+.container p {
+	font-size: 1.25em;
+	line-height: 1.5;
+}
+
+.nav .title,
+.nav a {
+	color: #fff;
+	font-weight: bold;
+	line-height: 150px;
+}
+
+.nav .title {
+	text-align: left;
+	width: 50%;
+	float: left;
+	font-size: 40px;
+}
+
+.nav .title a {
+	text-decoration: none;
+	font-size: 40px;
+	margin:0px;
+}
+
+.nav a {
+	text-decoration: none;
+	text-align: right;
+	margin:0px 10px;
+	font-size: 24px;
+}
+
+.nav a:hover {
+	color: #8b2900;
+	transition: .05s;
+}
+
+.nav .current {
+	color: #8b2900;
+}
+
+.nav .links {
+	width:50%;
+	float:right;
+	text-align: right;
+}
+
+.clear {
+	clear: both;
+}
+
+.a-title {
+	text-align: center;
+}
+
+/* Murray Tutorial */
+
+#murray div.bar {
 	display: inline-block;
 	width: 20px;
 	height: 75px;
@@ -12,14 +94,14 @@ div.bar {
 	background-color: teal;
 }
 
-.axis path,
-.axis line {
+#murray .axis path,
+#murray .axis line {
 	fill: none;
 	stroke: black;
 	shape-rendering: crispEdges;
 }
 
-.axis text {
+#murray .axis text {
 	font-family: "Helvetica";
 	font-size: 11px;
 }
