@@ -61,12 +61,12 @@ a:hover {
 }
 
 .nav a:hover {
-	color: #8b2900;
+	color: #3d3d3d;
 	transition: .05s;
 }
 
 .nav .current {
-	color: #8b2900;
+	color: #3d3d3d;
 }
 
 .nav .links {
