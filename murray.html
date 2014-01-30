@@ -11,7 +11,7 @@
     <body id="murray">
 
         <div class="nav">
-            <div class="nav-container">
+            <div class="container">
                 <div class="title"><a href="index.html">#NEXISClass</a></div>
                 <div class="links">
                     <a class="current" href="murray.html">Tutorial 1</a>
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="container main">
 
             <h1 class="a-title">D3 Intro Tutorial - <a href="http://alignedleft.com/tutorials/d3">by Scott Murray</a></h1>
 
@@ -36,7 +36,7 @@
                         dataset.push(newNumber);
                     }
 
-                    d3.select(".container").selectAll("div")
+                    d3.select(".main").selectAll("div")
                         .data(dataset)
                         .enter()
                         .append("div")
@@ -56,7 +56,7 @@
 
                     var w = 500;
                     var h = 50;
-                    var svg = d3.select(".container")
+                    var svg = d3.select(".main")
                         .append("svg")
                         .attr("width", w)
                         .attr("height", h);
@@ -95,7 +95,7 @@
                     var h = 100;
                     var barPadding = 1;
 
-                    var svg = d3.select(".container")
+                    var svg = d3.select(".main")
                                 .append("svg")
                                 .attr("width", w)
                                 .attr("height", h);
@@ -200,7 +200,7 @@
                                       .ticks(5);
 
                     // Rendering of scatterplot SVG elements
-                    var svg = d3.select(".container")
+                    var svg = d3.select(".main")
                                 .append("svg")
                                 .attr("width", w)
                                 .attr("height", h);

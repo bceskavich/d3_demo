@@ -22,8 +22,7 @@ a:hover {
 	width:100%;
 }
 
-.container,
-.nav-container {
+.container {
 	width:1000px;
 	margin:0 auto;
 	padding:0px 20px;
@@ -135,18 +134,40 @@ a:hover {
 	fill: darkred;
 }
 
-#bostock .axis text {
+#bostock .axis text,
+.custom .axis text {
   font: 10px sans-serif;
 }
 
 #bostock .axis path,
-#bostock .axis line {
+#bostock .axis line,
+.custom .axis path,
+.custom .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-#bostock .x.axis path {
+#bostock .x.axis path 
+.custom .x.axis path {
   display: none;
 }
 
+/* Custom */
+
+.custom rect {
+	fill: orange;
+}
+
+.custom rect:hover {
+	fill: steelblue;
+	transition: .1s;
+}
+
+#custom1 {
+	font-family: "Avenir";
+	font-size: 13x;
+	font-weight: bold;
+	fill: black;
+	text-anchor: middle;
+}
