@@ -16,6 +16,15 @@ a:hover {
 	text-decoration: underline;
 }
 
+hr {
+	border-style: solid;
+	margin: 15px 0px;
+	border-width: .07em;
+	border-bottom: none;
+	border-color: #777;
+}
+
+/* Navigation Styles */
 
 .nav {
 	background-color: #5F9EA0;
@@ -173,4 +182,12 @@ a:hover {
 	font-size: 13x;
 	font-weight: bold;
 	text-anchor: middle;
+}
+
+p.source {
+	font-size: .75em;
+}
+
+p.source a {
+	font-weight: normal;
 }
