@@ -23,134 +23,146 @@
         </div>
 
         <div class="container main">
-    	<h2>Ex. 1 - The ACC</h2>
+        	<h2>Example 1 - ACC Basketball</h2>
 
-    	<script type="text/javascript">
+            <p>Men's basketball is in full swing, especially in the ACC. The graph below shows each conference member's wins and losses thus far. This easily rendered depiction also helps us appreciate the glory of the Syracuse Orange this year!</p>
 
-    		// SVG Canvas Size
-            var margin = {top: 20, right: 30, bottom: 30, left: 40},
-                width = 960 - margin.left - margin.right
-                height = 500 - margin.top - margin.bottom
-    		
-    		// Scaling
-            var xScale = d3.scale.ordinal()
-                .rangeRoundBands([0, width], .1);
+        	<script type="text/javascript">
 
-            var yScale = d3.scale.linear()
-                .range([height, 0]);
+        		// SVG Canvas Size
+                var margin = {top: 20, right: 30, bottom: 30, left: 40},
+                    width = 960 - margin.left - margin.right
+                    height = 500 - margin.top - margin.bottom
+        		
+        		// Scaling
+                var xScale = d3.scale.ordinal()
+                    .rangeRoundBands([0, width], .1);
 
-            var yScale2 = d3.scale.linear()
-                .range([0, height]);
+                var yScale = d3.scale.linear()
+                    .range([height, 0]);
 
-            var xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient("bottom");
+                var yScale2 = d3.scale.linear()
+                    .range([0, height]);
 
-            var yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient("left")
-                .ticks("10");
+                var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("bottom");
 
-            var yAxis2 = d3.svg.axis()
-                .scale(yScale2)
-                .orient("left")
-                .ticks("10");
+                var yAxis = d3.svg.axis()
+                    .scale(yScale)
+                    .orient("left")
+                    .ticks("10");
 
-    		// SVG Canvas Creation
-    		var chart = d3.select(".main")
-    					.append("svg")
-    					.attr("class", "custom")
-                        .attr("width", width + margin.left + margin.right)
-                        .attr("height", (height + margin.top + margin.bottom) * 2)
+                var yAxis2 = d3.svg.axis()
+                    .scale(yScale2)
+                    .orient("left")
+                    .ticks("10");
+
+        		// SVG Canvas Creation
+        		var chart = d3.select(".main")
+        					.append("svg")
+        					.attr("class", "custom")
+                            .attr("width", width + margin.left + margin.right)
+                            .attr("height", (height + margin.top + margin.bottom) * 2)
+                            .append("g")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        		// Read Data and Chart Creation
+                d3.tsv("data/acc.tsv", type, function(error, data){
+                    // Add domain to scales based off data read
+                    xScale.domain(data.map(function(d){
+                        return d.name;
+                    }));
+                    yScale.domain([0, d3.max(data, function(d){
+                        return d.value;
+                    })]);
+                    yScale2.domain([0, d3.max(data, function(d){
+                        return d.value2;
+                    })]);
+
+                    var bar = chart.selectAll("g")
+                        .data(data)
+                        .enter()
                         .append("g")
-                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                        .attr("transform", function(d, i){
+                            return "translate(" + xScale(d.name) + ",0)";
+                        });
 
-    		// Read Data and Chart Creation
-            d3.tsv("data/acc.tsv", type, function(error, data){
-                // Add domain to scales based off data read
-                xScale.domain(data.map(function(d){
-                    return d.name;
-                }));
-                yScale.domain([0, d3.max(data, function(d){
-                    return d.value;
-                })]);
-                yScale2.domain([0, d3.max(data, function(d){
-                    return d.value2;
-                })]);
+                    bar.append("rect")
+                        .attr("class", "acc-top")
+                        .attr("y", function(d){
+                            return yScale(d.value);
+                        })
+                        .attr("height", function(d){
+                            return height - yScale(d.value);
+                        })
+                        .attr("width", xScale.rangeBand());
 
-                var bar = chart.selectAll("g")
-                    .data(data)
-                    .enter()
-                    .append("g")
-                    .attr("transform", function(d, i){
-                        return "translate(" + xScale(d.name) + ",0)";
-                    });
+                    bar.append("rect")
+                        .attr("class", "acc-bottom")
+                        .attr("y", function(d){
+                            return yScale2(d.value2) + (height - yScale2(d.value2));
+                        })
+                        .attr("height", function(d){
+                            return yScale2(d.value2);
+                        })
+                        .attr("width", xScale.rangeBand());
 
-                bar.append("rect")
-                    .attr("class", "acc-top")
-                    .attr("y", function(d){
-                        return yScale(d.value);
-                    })
-                    .attr("height", function(d){
-                        return height - yScale(d.value);
-                    })
-                    .attr("width", xScale.rangeBand());
+                    bar.append("text")
+                        .attr("id", "custom1")
+                        .text(function(d){
+                            return d.value
+                        })
+                        .attr("x", (xScale.rangeBand() / 2))
+                        .attr("y", function(d){
+                            return yScale(d.value) + (xScale.rangeBand() / 2);
+                        })
 
-                bar.append("rect")
-                    .attr("class", "acc-bottom")
-                    .attr("y", function(d){
-                        return yScale2(d.value2) + (height - yScale2(d.value2));
-                    })
-                    .attr("height", function(d){
-                        return yScale2(d.value2);
-                    })
-                    .attr("width", xScale.rangeBand());
+                    bar.append("text")
+                        .attr("id", "custom1")
+                        .text(function(d){
+                            if (d.value2 > 0){
+                                return d.value2;
+                            }
+                        })
+                        .attr("x", (xScale.rangeBand() / 2))
+                        .attr("y", function(d){
+                            return ((yScale2(d.value2) * 2) + (height - yScale2(d.value2))) - (xScale.rangeBand() / 3);
+                        })
 
-                bar.append("text")
-                    .attr("id", "custom1")
-                    .text(function(d){
-                        return d.value
-                    })
-                    .attr("x", (xScale.rangeBand() / 2))
-                    .attr("y", function(d){
-                        return yScale(d.value) + (xScale.rangeBand() / 2);
-                    })
+                    chart.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis);
 
-                bar.append("text")
-                    .attr("id", "custom1")
-                    .text(function(d){
-                        if (d.value2 > 0){
-                            return d.value2;
-                        }
-                    })
-                    .attr("x", (xScale.rangeBand() / 2))
-                    .attr("y", function(d){
-                        return ((yScale2(d.value2) * 2) + (height - yScale2(d.value2))) - (xScale.rangeBand() / 3);
-                    })
+                    chart.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("y", -20)
+                        .attr("dy", ".75em")
+                        .style("text-anchor", "end")
+                        .text("Wins");
 
-                chart.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis);
+                    chart.append("g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(yAxis2)
+                        .append("text")
+                        .attr("y", height + 10)
+                        .attr("dy", ".75em")
+                        .style("text-anchor", "end")
+                        .text("Losses");
 
-                chart.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis);
+                });
 
-                chart.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(yAxis2);
+                function type(d) {
+                    d.value = +d.value;
+                    d.value2 = +d.value2;
+                    return d;
+                }
 
-            });
-
-            function type(d) {
-                d.value = +d.value;
-                d.value2 = +d.value2;
-                return d;
-            }
-
-    	</script>
+        	</script>
         </div>
     </body>
 </html>

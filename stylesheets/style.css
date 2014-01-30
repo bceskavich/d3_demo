@@ -160,17 +160,12 @@ a:hover {
 }
 
 .custom .acc-bottom {
-	fill: steelblue;
+	fill: brown;
 }
 
-.custom .acc-top:hover {
-	fill: steelblue;
-	transition: .05s;
-}
-
+.custom .acc-top:hover,
 .custom .acc-bottom:hover {
-	fill: orange;
-	transition: .05s;
+	fill: steelblue;
 }
 
 #custom1 {
