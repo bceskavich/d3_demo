@@ -34,7 +34,7 @@
                     width = 960 - margin.left - margin.right
                     height = 500 - margin.top - margin.bottom
         		
-        		// Scaling
+        		// Scaling (yScale is for wins, yScale2 is for losses)
                 var xScale = d3.scale.ordinal()
                     .rangeRoundBands([0, width], .1);
 
@@ -44,6 +44,7 @@
                 var yScale2 = d3.scale.linear()
                     .range([0, height]);
 
+                // Three axes: x, y for wins, and y for losses
                 var xAxis = d3.svg.axis()
                     .scale(xScale)
                     .orient("bottom");
@@ -80,6 +81,7 @@
                         return d.value2;
                     })]);
 
+                    // Create initial bar elements for styling later
                     var bar = chart.selectAll("g")
                         .data(data)
                         .enter()
@@ -88,6 +90,7 @@
                             return "translate(" + xScale(d.name) + ",0)";
                         });
 
+                    // Bars for wins, css class .acc-top
                     bar.append("rect")
                         .attr("class", "acc-top")
                         .attr("y", function(d){
@@ -98,6 +101,7 @@
                         })
                         .attr("width", xScale.rangeBand());
 
+                    // Bars for losses, css clss .acc-bottom
                     bar.append("rect")
                         .attr("class", "acc-bottom")
                         .attr("y", function(d){
@@ -108,6 +112,7 @@
                         })
                         .attr("width", xScale.rangeBand());
 
+                    // Data values for # of wins pulled from TSV and appended to bars
                     bar.append("text")
                         .attr("id", "custom1")
                         .text(function(d){
@@ -118,6 +123,8 @@
                             return yScale(d.value) + (xScale.rangeBand() / 2);
                         })
 
+                    // Data values for # of losses pulled from TSV and appended to bars
+                    // No value appended if zero (i.e. no bar shown)
                     bar.append("text")
                         .attr("id", "custom1")
                         .text(function(d){
@@ -130,11 +137,13 @@
                             return ((yScale2(d.value2) * 2) + (height - yScale2(d.value2))) - (xScale.rangeBand() / 3);
                         })
 
+                    // Rendered xAxis
                     chart.append("g")
                         .attr("class", "x axis")
                         .attr("transform", "translate(0," + height + ")")
                         .call(xAxis);
 
+                    // Rendered yScale for wins, added axis title to top
                     chart.append("g")
                         .attr("class", "y axis")
                         .call(yAxis)
@@ -144,6 +153,7 @@
                         .style("text-anchor", "end")
                         .text("Wins");
 
+                    // Rendered yScale2 for losses, added axis title to bottom
                     chart.append("g")
                         .attr("class", "y axis")
                         .attr("transform", "translate(0," + height + ")")
@@ -156,6 +166,7 @@
 
                 });
 
+                // Converts numeric string values (for wins & losses) to integer values
                 function type(d) {
                     d.value = +d.value;
                     d.value2 = +d.value2;
