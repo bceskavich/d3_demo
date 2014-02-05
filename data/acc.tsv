@@ -1,16 +1,16 @@
-name		value		value2
-Syracuse		20		0
-Virginia		16		5
-Pitt		18		3
-Duke		17		4
-Clemson		13		6
-NC State		14		7
-Wake		14		7
-FSU		13		7
-Maryland		12		9
-NC		13		7
-GT		11		10
-ND		11		10
-Miami		10		10
-BC		6		14
-VT		8		12
+name		wins		losses
+Syracuse		22		0
+Virginia		17		5
+Pitt		18		4
+Duke		18		5
+Clemson		15		6
+NC State		14		8
+Wake		14		9
+FSU		13		8
+Maryland		13		10
+NC		15		7
+GT		12		11
+ND		12		11
+Miami		11		10
+BC		6		15
+VT		8		13

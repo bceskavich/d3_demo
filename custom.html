@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="stylesheets/style.css" />
 
         <script type="text/javascript" src="js/d3.v3.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     </head>
     <body>
 
@@ -29,152 +30,188 @@
 
             <p class="source">Source - <a href="http://www.theacc.com/#!/standings?sport=m-baskbl">The Atlantic Coast Conference</a></p>
 
+            <select id="conf">
+                <option value="acc">ACC</option>
+                <option value="be">Big East</option>
+            </select>
+
+            <p class="title2">
+                The Atlantic Coast Conference
+            </p>
+
         	<script type="text/javascript">
 
-        		// SVG Canvas Size
-                var margin = {top: 20, right: 30, bottom: 30, left: 40},
-                    width = 960 - margin.left - margin.right
-                    height = 500 - margin.top - margin.bottom
-        		
-        		// Scaling (yScale is for wins, yScale2 is for losses)
-                var xScale = d3.scale.ordinal()
-                    .rangeRoundBands([0, width], .1);
+                function render_chart(){
+                    // Default Value = ACC Conference
+                    var conf = "acc"
+                    var conf = $("#conf").val();
+                    console.log(conf);
 
-                var yScale = d3.scale.linear()
-                    .range([height, 0]);
+                    $(".title2").empty();
 
-                var yScale2 = d3.scale.linear()
-                    .range([0, height]);
+                    if (conf == "be"){
+                        $(".title2").append("The Big East");
+                    }
+                    else if (conf = "acc") {
+                        $(".title2").append("The Atlantic Coast Conference");
+                    }
 
-                // Three axes: x, y for wins, and y for losses
-                var xAxis = d3.svg.axis()
-                    .scale(xScale)
-                    .orient("bottom");
+            		// SVG Canvas Size
+                    var margin = {top: 20, right: 30, bottom: 30, left: 40},
+                        width = 960 - margin.left - margin.right
+                        height = 500 - margin.top - margin.bottom
+            		
+            		// Scaling (yScale is for wins, yScale2 is for losses)
+                    var xScale = d3.scale.ordinal()
+                        .rangeRoundBands([0, width], .1);
 
-                var yAxis = d3.svg.axis()
-                    .scale(yScale)
-                    .orient("left")
-                    .ticks("10");
+                    var yScale = d3.scale.linear()
+                        .range([height, 0]);
 
-                var yAxis2 = d3.svg.axis()
-                    .scale(yScale2)
-                    .orient("left")
-                    .ticks("10");
+                    var yScale2 = d3.scale.linear()
+                        .range([0, height]);
 
-        		// SVG Canvas Creation
-        		var chart = d3.select(".main")
-        					.append("svg")
-        					.attr("class", "custom")
-                            .attr("width", width + margin.left + margin.right)
-                            .attr("height", (height + margin.top + margin.bottom) * 2)
+                    // Three axes: x, y for wins, and y for losses
+                    var xAxis = d3.svg.axis()
+                        .scale(xScale)
+                        .orient("bottom");
+
+                    var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left")
+                        .ticks("10");
+
+                    var yAxis2 = d3.svg.axis()
+                        .scale(yScale2)
+                        .orient("left")
+                        .ticks("10");
+
+            		// SVG Canvas Creation
+            		var chart = d3.select(".main")
+            					.append("svg")
+            					.attr("class", "custom")
+                                .attr("width", width + margin.left + margin.right)
+                                .attr("height", (height + margin.top + margin.bottom) * 2)
+                                .append("g")
+                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            		// Read Data and Chart Creation
+                    d3.tsv("data/" + conf + ".tsv", type, function(error, data){
+                        // Add domain to scales based off data read
+                        xScale.domain(data.map(function(d){
+                            return d.name;
+                        }));
+                        yScale.domain([0, d3.max(data, function(d){
+                            return d.wins;
+                        })]);
+                        yScale2.domain([0, d3.max(data, function(d){
+                            return d.losses;
+                        })]);
+
+                        // Create initial bar elements for styling later
+                        var bar = chart.selectAll("g")
+                            .data(data)
+                            .enter()
                             .append("g")
-                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                            .attr("transform", function(d, i){
+                                return "translate(" + xScale(d.name) + ",0)";
+                            });
 
-        		// Read Data and Chart Creation
-                d3.tsv("data/acc.tsv", type, function(error, data){
-                    // Add domain to scales based off data read
-                    xScale.domain(data.map(function(d){
-                        return d.name;
-                    }));
-                    yScale.domain([0, d3.max(data, function(d){
-                        return d.value;
-                    })]);
-                    yScale2.domain([0, d3.max(data, function(d){
-                        return d.value2;
-                    })]);
+                        // Bars for wins, css class .acc-top
+                        bar.append("rect")
+                            .attr("class", "acc-top")
+                            .attr("y", function(d){
+                                return yScale(d.wins);
+                            })
+                            .attr("height", function(d){
+                                return height - yScale(d.wins);
+                            })
+                            .attr("width", xScale.rangeBand());
 
-                    // Create initial bar elements for styling later
-                    var bar = chart.selectAll("g")
-                        .data(data)
-                        .enter()
-                        .append("g")
-                        .attr("transform", function(d, i){
-                            return "translate(" + xScale(d.name) + ",0)";
-                        });
+                        // Bars for losses, css clss .acc-bottom
+                        bar.append("rect")
+                            .attr("class", "acc-bottom")
+                            .attr("y", function(d){
+                                return yScale2(d.losses) + (height - yScale2(d.losses));
+                            })
+                            .attr("height", function(d){
+                                return yScale2(d.losses);
+                            })
+                            .attr("width", xScale.rangeBand());
 
-                    // Bars for wins, css class .acc-top
-                    bar.append("rect")
-                        .attr("class", "acc-top")
-                        .attr("y", function(d){
-                            return yScale(d.value);
-                        })
-                        .attr("height", function(d){
-                            return height - yScale(d.value);
-                        })
-                        .attr("width", xScale.rangeBand());
+                        // Data values for # of wins pulled from TSV and appended to bars
+                        bar.append("text")
+                            .attr("id", "custom1")
+                            .text(function(d){
+                                return d.wins
+                            })
+                            .attr("x", (xScale.rangeBand() / 2))
+                            .attr("y", function(d){
+                                return yScale(d.wins) + (xScale.rangeBand() / 2);
+                            })
 
-                    // Bars for losses, css clss .acc-bottom
-                    bar.append("rect")
-                        .attr("class", "acc-bottom")
-                        .attr("y", function(d){
-                            return yScale2(d.value2) + (height - yScale2(d.value2));
-                        })
-                        .attr("height", function(d){
-                            return yScale2(d.value2);
-                        })
-                        .attr("width", xScale.rangeBand());
+                        // Data values for # of losses pulled from TSV and appended to bars
+                        // No value appended if zero (i.e. no bar shown)
+                        bar.append("text")
+                            .attr("id", "custom1")
+                            .text(function(d){
+                                if (d.losses > 0){
+                                    return d.losses;
+                                }
+                            })
+                            .attr("x", (xScale.rangeBand() / 2))
+                            .attr("y", function(d){
+                                return ((yScale2(d.losses) * 2) + (height - yScale2(d.losses))) - (xScale.rangeBand() / 3);
+                            })
 
-                    // Data values for # of wins pulled from TSV and appended to bars
-                    bar.append("text")
-                        .attr("id", "custom1")
-                        .text(function(d){
-                            return d.value
-                        })
-                        .attr("x", (xScale.rangeBand() / 2))
-                        .attr("y", function(d){
-                            return yScale(d.value) + (xScale.rangeBand() / 2);
-                        })
+                        // Rendered xAxis
+                        chart.append("g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + height + ")")
+                            .call(xAxis);
 
-                    // Data values for # of losses pulled from TSV and appended to bars
-                    // No value appended if zero (i.e. no bar shown)
-                    bar.append("text")
-                        .attr("id", "custom1")
-                        .text(function(d){
-                            if (d.value2 > 0){
-                                return d.value2;
-                            }
-                        })
-                        .attr("x", (xScale.rangeBand() / 2))
-                        .attr("y", function(d){
-                            return ((yScale2(d.value2) * 2) + (height - yScale2(d.value2))) - (xScale.rangeBand() / 3);
-                        })
+                        // Rendered yScale for wins, added axis title to top
+                        chart.append("g")
+                            .attr("class", "y axis")
+                            .call(yAxis)
+                            .append("text")
+                            .attr("y", -20)
+                            .attr("dy", ".75em")
+                            .style("text-anchor", "end")
+                            .text("Wins");
 
-                    // Rendered xAxis
-                    chart.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(xAxis);
+                        // Rendered yScale2 for losses, added axis title to bottom
+                        chart.append("g")
+                            .attr("class", "y axis")
+                            .attr("transform", "translate(0," + height + ")")
+                            .call(yAxis2)
+                            .append("text")
+                            .attr("y", height + 10)
+                            .attr("dy", ".75em")
+                            .style("text-anchor", "end")
+                            .text("Losses");
 
-                    // Rendered yScale for wins, added axis title to top
-                    chart.append("g")
-                        .attr("class", "y axis")
-                        .call(yAxis)
-                        .append("text")
-                        .attr("y", -20)
-                        .attr("dy", ".75em")
-                        .style("text-anchor", "end")
-                        .text("Wins");
+                    });
 
-                    // Rendered yScale2 for losses, added axis title to bottom
-                    chart.append("g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(yAxis2)
-                        .append("text")
-                        .attr("y", height + 10)
-                        .attr("dy", ".75em")
-                        .style("text-anchor", "end")
-                        .text("Losses");
-
-                });
-
-                // Converts numeric string values (for wins & losses) to integer values
-                function type(d) {
-                    d.value = +d.value;
-                    d.value2 = +d.value2;
-                    return d;
+                    // Converts numeric string values (for wins & losses) to integer values
+                    function type(d) {
+                        d.wins = +d.wins;
+                        d.losses = +d.losses;
+                        return d;
+                    }
                 }
 
+            $(document).ready(function(){
+
+                render_chart();
+
+                $("#conf").change(function(){
+
+                    $("svg").remove();
+                    render_chart();
+                });
+
+            });
         	</script>
         </div>
     </body>

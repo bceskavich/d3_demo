@@ -24,6 +24,10 @@ hr {
 	border-color: #777;
 }
 
+select {
+	margin-bottom: 15px;
+}
+
 /* Navigation Styles */
 
 .nav {
