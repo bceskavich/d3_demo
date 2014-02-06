@@ -186,6 +186,7 @@ select {
 	font-size: 13x;
 	font-weight: bold;
 	text-anchor: middle;
+	fill: #fff;
 }
 
 p.source {

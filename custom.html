@@ -28,7 +28,7 @@
 
             <p>Men's basketball is in full swing, especially in the ACC. The graph below shows each conference member's wins and losses thus far. This easily rendered depiction also helps us appreciate the glory of the Syracuse Orange this year!</p>
 
-            <p class="source">Source - <a href="http://www.theacc.com/#!/standings?sport=m-baskbl">The Atlantic Coast Conference</a></p>
+            <!--<p class="source">Source - <a href="http://www.theacc.com/#!/standings?sport=m-baskbl">The Atlantic Coast Conference</a></p>-->
 
             <select id="conf">
                 <option value="acc">ACC</option>
@@ -120,13 +120,23 @@
                         // Bars for wins, css class .acc-top
                         bar.append("rect")
                             .attr("class", "acc-top")
-                            .attr("y", function(d){
-                                return yScale(d.wins);
+                            .attr("x", function(d){
+                                return -(xScale.rangeBand())
                             })
+                            .attr("y", function(d){
+                                return (yScale(d.wins) - height) - (yScale(d.wins));
+                            })
+                            .attr("transform", "rotate(-180)")
                             .attr("height", function(d){
                                 return height - yScale(d.wins);
                             })
-                            .attr("width", xScale.rangeBand());
+                            .attr("width", xScale.rangeBand()).append("animate")
+                                .attr("attributeName", "height")
+                                .attr("to", function(d){
+                                    return height - yScale(d.wins);
+                                })
+                                .attr("from", "height")
+                                .attr("dur", "2s");;
 
                         // Bars for losses, css clss .acc-bottom
                         bar.append("rect")
@@ -137,7 +147,13 @@
                             .attr("height", function(d){
                                 return yScale2(d.losses);
                             })
-                            .attr("width", xScale.rangeBand());
+                            .attr("width", xScale.rangeBand()).append("animate")
+                                .attr("attributeName", "height")
+                                .attr("from", "0")
+                                .attr("to", function(d){
+                                    return yScale2(d.losses);
+                                })
+                                .attr("dur", "2s");
 
                         // Data values for # of wins pulled from TSV and appended to bars
                         bar.append("text")
