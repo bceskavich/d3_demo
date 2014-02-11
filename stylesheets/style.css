@@ -1,4 +1,17 @@
 /* Universal Styles */
+@font-face {
+    font-family: 'Brandon Bold';
+    src: url('../font/Brandon_bld.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Brandon Light';
+    src: url('../font/Brandon_light.otf');
+    font-weight: normal;
+    font-style: normal;
+}
 
 body {
 	font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -51,6 +64,7 @@ select {
 .nav a {
 	color: #fff;
 	font-weight: bold;
+	font-family: 'Brandon Bold', inherit;
 	line-height: 150px;
 }
 
@@ -175,6 +189,11 @@ select {
 
 /* Custom */
 
+#basketball h2,
+#basketball .conf-title {
+	font-family: 'Brandon Bold', inherit;
+}
+
 .custom .acc-top {
 	fill: #F15A3A;
 }
@@ -189,7 +208,7 @@ select {
 }
 
 #custom1 {
-	font-family: "Avenir";
+	font-family: 'Brandon Light';
 	font-size: 13x;
 	font-weight: bold;
 	text-anchor: middle;
