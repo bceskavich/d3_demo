@@ -4,10 +4,11 @@ body {
 	font-family: "Avenir", Helvetica, Arial, sans-serif;
 	border:0;
 	margin:0;
+	color: rgb(49, 49, 49);
 }
 
 a {
-	color: #8b2900;
+	color: #E73827;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -31,7 +32,7 @@ select {
 /* Navigation Styles */
 
 .nav {
-	background-color: #5F9EA0;
+	background-color: #8FC5C5;
 	width:100%;
 }
 
@@ -74,12 +75,12 @@ select {
 }
 
 .nav a:hover {
-	color: #3d3d3d;
+	color: rgb(49, 49, 49);
 	transition: .05s;
 }
 
 .nav .current {
-	color: #3d3d3d;
+	color: rgb(49, 49, 49);
 }
 
 .nav .links {
@@ -149,7 +150,11 @@ select {
 
 #bostock .axis text,
 .custom .axis text {
-  font: 10px sans-serif;
+  font: 10px Avenir;
+}
+
+.custom .x.axis text {
+	fill: #FFF2D4;
 }
 
 #bostock .axis path,
@@ -161,24 +166,26 @@ select {
   shape-rendering: crispEdges;
 }
 
-#bostock .x.axis path 
-.custom .x.axis path {
-  display: none;
+#bostock .x.axis path, 
+.custom .x.axis path,
+.custom .x.axis line {
+  stroke: none;
+
 }
 
 /* Custom */
 
 .custom .acc-top {
-	fill: orange;
+	fill: #F15A3A;
 }
 
 .custom .acc-bottom {
-	fill: brown;
+	fill: #98D6D7;
 }
 
 .custom .acc-top:hover,
 .custom .acc-bottom:hover {
-	fill: steelblue;
+	fill: rgb(49, 49, 49);
 }
 
 #custom1 {

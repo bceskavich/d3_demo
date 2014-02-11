@@ -17,49 +17,64 @@
                 <div class="links">
                     <a href="murray.html">Tutorial 1</a>
                     <a href="bostock.html">Tutorial 2</a>
-                    <a class="current" href="custom.html">Custom Examples</a>
+                    <a class="current" href="custom.html">NCAA Basketball</a>
                 </div>
                 <div class="clear"></div>
             </div>
         </div>
 
         <div class="container main">
-        	<h2>Example 1 - ACC Basketball</h2>
+        	<h2>NCAA Basketball</h2>
 
             <p>Men's basketball is in full swing, especially in the ACC. The graph below shows each conference member's wins and losses thus far. This easily rendered depiction also helps us appreciate the glory of the Syracuse Orange this year!</p>
-
-            <!--<p class="source">Source - <a href="http://www.theacc.com/#!/standings?sport=m-baskbl">The Atlantic Coast Conference</a></p>-->
 
             <select id="conf">
                 <option value="acc">ACC</option>
                 <option value="be">Big East</option>
+                <option value="b12">Big 12</option>
+                <option value="b10">Big Ten</option>
+                <option value="p12">Pac-12</option>
+                <option value="sec">Southeastern</option>
             </select>
 
-            <p class="title2">
+            <p class="conf-title">
                 The Atlantic Coast Conference
             </p>
 
         	<script type="text/javascript">
 
                 function render_chart(){
+
                     // Default Value = ACC Conference
                     var conf = "acc"
                     var conf = $("#conf").val();
                     console.log(conf);
 
-                    $(".title2").empty();
+                    $(".conf-title").empty();
 
                     if (conf == "be"){
-                        $(".title2").append("The Big East");
+                        $(".conf-title").append("<a href='http://www.bigeast.com/' target='_blank'>The Big East</a>");
                     }
-                    else if (conf = "acc") {
-                        $(".title2").append("The Atlantic Coast Conference");
+                    else if (conf == "acc") {
+                        $(".conf-title").append("<a href='http://www.theacc.com/' target='_blank'>The Atlantic Coast Conference</a>");
+                    }
+                    else if (conf == "b12" ) {
+                        $(".conf-title").append("<a href='http://www.big12sports.com/' target='_blank'>The Big 12 Conference</a>");
+                    }
+                    else if (conf == "b10" ) {
+                        $(".conf-title").append("<a href='http://www.bigten.org/' target='_blank'>The Big Ten Conference</a>");
+                    }
+                    else if (conf == "sec" ) {
+                        $(".conf-title").append("<a href='http://www.secdigitalnetwork.com/' target='_blank'>The Southeastern Conference</a>");
+                    }
+                    else if (conf == "p12" ) {
+                        $(".conf-title").append("<a href='http://pac-12.com/' target='_blank'>Pac-12</a>");
                     }
 
             		// SVG Canvas Size
                     var margin = {top: 20, right: 30, bottom: 30, left: 40},
                         width = 960 - margin.left - margin.right
-                        height = 500 - margin.top - margin.bottom
+                        height = 350 - margin.top - margin.bottom
             		
             		// Scaling (yScale is for wins, yScale2 is for losses)
                     var xScale = d3.scale.ordinal()
@@ -183,7 +198,7 @@
                         // Rendered xAxis
                         chart.append("g")
                             .attr("class", "x axis")
-                            .attr("transform", "translate(0," + height + ")")
+                            .attr("transform", "translate(0," + (height - 25) + ")")
                             .call(xAxis);
 
                         // Rendered yScale for wins, added axis title to top
@@ -222,7 +237,6 @@
                 render_chart();
 
                 $("#conf").change(function(){
-
                     $("svg").remove();
                     render_chart();
                 });
