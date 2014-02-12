@@ -151,7 +151,7 @@
                                     return height - yScale(d.wins);
                                 })
                                 .attr("from", "height")
-                                .attr("dur", "2s");;
+                                .attr("dur", ".5s");
 
                         // Bars for losses, css clss .acc-bottom
                         bar.append("rect")
@@ -168,7 +168,7 @@
                                 .attr("to", function(d){
                                     return yScale2(d.losses);
                                 })
-                                .attr("dur", "2s");
+                                .attr("dur", ".5s");
 
                         // Data values for # of wins pulled from TSV and appended to bars
                         bar.append("text")

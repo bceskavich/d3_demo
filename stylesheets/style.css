@@ -163,8 +163,12 @@ select {
 }
 
 #bostock .axis text,
-.custom .axis text {
+.custom .x.axis text {
   font: 10px Avenir;
+}
+
+.custom .y.axis text {
+	font: .9em 'Brandon Light';
 }
 
 .custom .x.axis text {
@@ -178,6 +182,10 @@ select {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
+}
+
+.custom .y.axis path {
+	stroke: none;
 }
 
 #bostock .x.axis path, 
