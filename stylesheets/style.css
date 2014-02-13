@@ -27,7 +27,7 @@ a {
 }
 
 a:hover {
-	text-decoration: underline;
+	color: rgb(49, 49, 49);
 }
 
 hr {

@@ -28,6 +28,8 @@
 
             <p>Men's basketball is in full swing, especially in the ACC. The graph below shows each conference member's wins and losses thus far. This easily rendered depiction also helps us appreciate the glory of the Syracuse Orange this year!</p>
 
+
+            <strong><em>Select a Conference:</em></strong>
             <select id="conf">
                 <option value="acc">ACC</option>
                 <option value="be">Big East</option>
@@ -203,7 +205,7 @@
 
                         // Rendered yScale for wins, added axis title to top
                         chart.append("g")
-                            .attr("class", "y axis")
+                            .attr("class", "y axis head")
                             .call(yAxis)
                             .append("text")
                             .attr("y", -20)
@@ -214,7 +216,7 @@
 
                         // Rendered yScale2 for losses, added axis title to bottom
                         chart.append("g")
-                            .attr("class", "y axis")
+                            .attr("class", "y axis head")
                             .attr("transform", "translate(0," + height + ")")
                             .call(yAxis2)
                             .append("text")
